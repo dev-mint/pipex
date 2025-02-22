@@ -1,0 +1,15 @@
+#    Makefile                                           :+:      :+:    :+:    #
+#    By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+         #
+#    Created: 2025/02/22 15:24:35 by anachat           #+#    #+#              #
+#    Updated: 2025/02/22 17:09:27 by anachat          ###   ########.fr        #
+CFLAGS      =   -Wall -Wextra -Werror -fsanitize=address -g
+LIBFT_LIB   =   $(LIBFT_DIR)/libft.a
+SRCS        =   mandatory/pipex.c mandatory/utils.c mandatory/utils2.c
+all: $(LIBFT_DIR) $(NAME)
+	@make -C $(LIBFT_DIR)
+mandatory/%.o: mandatory/%.c $(LIBFT_LIB) mandatory/push_swap.h
+clean:
+	@make -C $(LIBFT_DIR) clean
+fclean: clean
+	@make -C $(LIBFT_DIR) fclean
+re: fclean all
