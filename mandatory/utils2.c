@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 16:48:20 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/22 17:02:17 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/23 11:49:20 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,5 @@ int	ft_dup2(int oldfd, int newfd)
 
 	res = dup2(oldfd, newfd);
 	close(oldfd);
-	return (res);	
+	return (res);
 }

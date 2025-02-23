@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:05:43 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/22 17:10:04 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/23 11:49:03 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ char	*join_path(char *path, char *cmd)
 
 static char	*get_env_path(char **env)
 {
-	int 	i;
+	int	i;
 
 	i = 0;
 	while (env[i])
-	{ 
+	{
 		if (ft_strnstr(env[i], "PATH=", 5))
 			return (env[i] + 5);
 		i++;
@@ -48,7 +48,7 @@ static char	*get_env_path(char **env)
 	return (NULL);
 }
 
-char *find_cmd(char **paths, char *cmd)
+char	*find_cmd(char **paths, char *cmd)
 {
 	char	*cmd_path;
 	int		i;
