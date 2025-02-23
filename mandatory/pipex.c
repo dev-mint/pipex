@@ -6,11 +6,30 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/22 17:05:56 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/23 11:22:41 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+static int	init_process(char **av, char **env, int *fd, char ***cmd)
+{
+	char	*path;
+	int		in_fd;
+
+	in_fd = open(av[1], O_RDONLY);
+	if (in_fd < 0)
+		return (perror("failed to open infile\n"), 1);
+	*cmd = ft_split(av[2], ' ');
+	if (!*cmd)
+		return (perror("allocation error\n"), 1);
+	path = get_path((*cmd)[0], env);
+	if (!path)
+		return (perror("cannot find cmd path\n"), 1);
+	if (pipe(fd) < 0)
+		return (perror("pipe failed\n"), 1);
+	return (in_fd);
+}
 
 static int parent(char **av, char **env)
 {
