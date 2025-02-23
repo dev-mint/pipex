@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/23 11:57:13 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/23 17:34:45 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,11 @@ static int	parent(char **av, char **env)
 
 	fd[2] = init_process(av, env, fd, &cmd);
 	if (fd[2] == -1)
+	{
+		close(fd[1]);
+        ft_dup2(fd[0], 0); 
 		return (1);
+	}
 	id = fork();
 	if (id < 0)
 		return (perror("fork failed\n"), 1);
@@ -48,7 +52,10 @@ static int	parent(char **av, char **env)
 		ft_dup2(fd[2], 0);
 		ft_dup2(fd[1], 1);
 		if (execve(get_path(cmd[0], env), cmd, env) == -1)
-			return (perror("execve 1 failed\n"), exit(1), 1);
+		{
+			perror("execve 1 failed");
+			exit(1);  // Ensure the child process terminates
+		}
 	}
 	else
 		return (ft_dup2(fd[0], 0), close(fd[1]), 0);
@@ -85,10 +92,16 @@ static int	parent2(char **av, char **env)
 
 int	main(int ac, char **av, char **env)
 {
+	int	fd[2];
+
+	fd[0] = dup(0);
+	fd[1] = dup(1);
 	if (ac != 5)
 		return (0);
 	parent(av, env);
 	parent2(av, env);
+	ft_dup2(fd[1], 1);
+	ft_dup2(fd[0], 0);
 	while (wait(0) != -1)
 		;
 	return (0);

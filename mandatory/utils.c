@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:05:43 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/23 11:49:03 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/23 17:33:31 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ char	*get_path(char *cmd, char **env)
 	if (!paths)
 		return (NULL);
 	cmd_path = find_cmd(paths, cmd);
-	if (!cmd_path)
-		return (free_arr(paths), NULL);
-	return (free_arr(paths), cmd_path);
+	free_arr(paths);
+	return (cmd_path);
 }
