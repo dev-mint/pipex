@@ -6,49 +6,66 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/24 10:59:34 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/24 11:11:08 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	init_process(char **av, char **env, int *fd, char ***cmd)
-{
-	char	*path;
-	int		in_fd;
+// static int	init_process(char **av, char **env, int *fd, char ***cmd)
+// {
+// 	char	*path;
+// 	int		in_fd;
 
-	if (pipe(fd) < 0)
-		return (perror("pipe failed\n"), -1);
-	in_fd = open(av[1], O_RDONLY);
-	if (in_fd < 0)
-		return (perror("failed to open infile\n"), -1);
-	*cmd = ft_split(av[2], ' ');
-	if (!*cmd)
-		return (perror("allocation error\n"), -1);
-	path = get_path((*cmd)[0], env);
-	if (!path)
-		return (perror("cannot find cmd path\n"), -1);
-	return (in_fd);
-}
+// 	if (pipe(fd) < 0)
+// 		return (perror("pipe failed\n"), -1);
+// 	in_fd = open(av[1], O_RDONLY);
+// 	if (in_fd < 0)
+// 		return (perror("failed to open infile\n"), -1);
+// 	*cmd = ft_split(av[2], ' ');
+// 	if (!*cmd)
+// 		return (perror("allocation error\n"), -1);
+// 	path = get_path((*cmd)[0], env);
+// 	if (!path)
+// 		return (perror("cannot find cmd path\n"), -1);
+// 	return (in_fd);
+// }
+
+// static int	exec_child1()
+// {
+	
+// }
 
 static int	parent(char **av, char **env)
 {
 	char	**cmd;
+	char	*path;
 	int		fd[3];
 	int		id;
 
-	fd[2] = init_process(av, env, fd, &cmd);
-	if (fd[2] == -1)
+
+	if (pipe(fd) < 0)
+		return (perror("pipe failed"), 1);
+	fd[2] = open(av[1], O_RDONLY);
+	if (fd[2] < 0)
+		return (perror("failed to open infile"), 1);
+	cmd = ft_split(av[2], ' ');
+	if (!cmd)
+		return (perror("allocation error"), 1);
+	path = get_path(cmd[0], env);
+	if (!path)
 	{
+		perror("cannot find cmd path");
 		close(fd[1]);
 		ft_dup2(fd[0], 0);
-		close(fd[0]);
-		printf("COMMAND 1 NOT FOUND\n");
 		return (1);
 	}
+	// exec_child1()
+
+	// cmd not found
 	id = fork();
 	if (id < 0)
-		return (perror("fork failed\n"), 1);
+		return (perror("fork failed"), 1);
 	if (id == 0)
 	{
 		ft_dup2(fd[2], 0);
@@ -57,7 +74,7 @@ static int	parent(char **av, char **env)
 		if (execve(get_path(cmd[0], env), cmd, env) == -1)
 		{
 			perror("execve 1 failed");
-			exit(1);  // Ensure the child process terminates
+			exit(1);
 		}
 	}
 	else
