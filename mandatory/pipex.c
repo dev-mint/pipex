@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/24 11:11:08 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/24 12:51:15 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,34 @@
 // 	return (in_fd);
 // }
 
-// static int	exec_child1()
-// {
-	
-// }
+static int	exec_child1(int *fd, char **cmd, char **env)
+{
+	int	id;
+
+	id = fork();
+	if (id < 0)
+		return (perror("fork failed"), 1);
+	if (id == 0)
+	{
+		close(fd[0]);
+		ft_dup2(fd[2], 0);
+		ft_dup2(fd[1], 1);
+		if (execve(get_path(cmd[0], env), cmd, env) == -1)
+		{
+			perror("execve 1 failed");
+			exit(1);
+		}
+	}
+	else
+		return (ft_dup2(fd[0], 0), close(fd[1]), close(fd[2]), 0);
+	return (1);
+}
 
 static int	parent(char **av, char **env)
 {
 	char	**cmd;
 	char	*path;
 	int		fd[3];
-	int		id;
-
 
 	if (pipe(fd) < 0)
 		return (perror("pipe failed"), 1);
@@ -56,29 +72,9 @@ static int	parent(char **av, char **env)
 	if (!path)
 	{
 		perror("cannot find cmd path");
-		close(fd[1]);
-		ft_dup2(fd[0], 0);
-		return (1);
+		return (close(fd[1]), ft_dup2(fd[0], 0), 1);
 	}
-	// exec_child1()
-
-	// cmd not found
-	id = fork();
-	if (id < 0)
-		return (perror("fork failed"), 1);
-	if (id == 0)
-	{
-		ft_dup2(fd[2], 0);
-		close(fd[0]);
-		ft_dup2(fd[1], 1);
-		if (execve(get_path(cmd[0], env), cmd, env) == -1)
-		{
-			perror("execve 1 failed");
-			exit(1);
-		}
-	}
-	else
-		return (ft_dup2(fd[0], 0), close(fd[1]), 0);
+	exec_child1(fd, cmd, env);
 	return (0);
 }
 
@@ -107,12 +103,21 @@ static int	parent2(char **av, char **env)
 		if (execve(path, cmd, env) == -1)
 			return (perror("execve 2 failed"), exit(1), 1);
 	}
-	return (0);
+	return (close(out_fd), 0); // here
+}
+
+
+void f()
+{
+    // system("leaks pipex");  // Check for memory leaks
+    system("lsof | grep '^pipex'"); // Check for open file descriptors
 }
 
 int	main(int ac, char **av, char **env)
 {
 	int	fd[2];
+	
+	atexit(f);
 
 	fd[0] = dup(0);
 	fd[1] = dup(1);
@@ -122,7 +127,6 @@ int	main(int ac, char **av, char **env)
 	parent2(av, env);
 	ft_dup2(fd[1], 1);
 	ft_dup2(fd[0], 0);
-
 	while (wait(0) != -1)
 		;
 	return (0);
