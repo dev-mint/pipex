@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/23 17:34:45 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/24 10:59:34 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static int	init_process(char **av, char **env, int *fd, char ***cmd)
 	char	*path;
 	int		in_fd;
 
+	if (pipe(fd) < 0)
+		return (perror("pipe failed\n"), -1);
 	in_fd = open(av[1], O_RDONLY);
 	if (in_fd < 0)
 		return (perror("failed to open infile\n"), -1);
@@ -26,8 +28,6 @@ static int	init_process(char **av, char **env, int *fd, char ***cmd)
 	path = get_path((*cmd)[0], env);
 	if (!path)
 		return (perror("cannot find cmd path\n"), -1);
-	if (pipe(fd) < 0)
-		return (perror("pipe failed\n"), -1);
 	return (in_fd);
 }
 
@@ -41,7 +41,9 @@ static int	parent(char **av, char **env)
 	if (fd[2] == -1)
 	{
 		close(fd[1]);
-        ft_dup2(fd[0], 0); 
+		ft_dup2(fd[0], 0);
+		close(fd[0]);
+		printf("COMMAND 1 NOT FOUND\n");
 		return (1);
 	}
 	id = fork();
@@ -50,6 +52,7 @@ static int	parent(char **av, char **env)
 	if (id == 0)
 	{
 		ft_dup2(fd[2], 0);
+		close(fd[0]);
 		ft_dup2(fd[1], 1);
 		if (execve(get_path(cmd[0], env), cmd, env) == -1)
 		{
@@ -102,6 +105,7 @@ int	main(int ac, char **av, char **env)
 	parent2(av, env);
 	ft_dup2(fd[1], 1);
 	ft_dup2(fd[0], 0);
+
 	while (wait(0) != -1)
 		;
 	return (0);
