@@ -6,7 +6,7 @@
 #    By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/22 15:24:35 by anachat           #+#    #+#              #
-#    Updated: 2025/02/22 17:09:27 by anachat          ###   ########.fr        #
+#    Updated: 2025/02/24 12:56:16 by anachat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME        =   pipex
 NAME_BONUS  =   pipex_bonus
 
 CC          =   cc
-CFLAGS      =   -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS      =   -Wall -Wextra -Werror #-fsanitize=address -g
 
 LIBFT_DIR   =   lib/libft
 

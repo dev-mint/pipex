@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:05:43 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/23 17:33:31 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/24 13:49:19 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*get_path(char *cmd, char **env)
 	{
 		if (!cmd_exists(cmd))
 			return (NULL);
-		return (cmd);
+		return (ft_strdup(cmd));
 	}
 	env_path = get_env_path(env);
 	if (!env_path)
