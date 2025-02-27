@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 16:48:20 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/23 11:49:20 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/27 11:08:02 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ void	free_arr(char **arr)
 		i++;
 	}
 	free(arr);
+}
+
+void	ft_close2(int fd1, int fd2)
+{
+	close(fd1);
+	close(fd2);
 }
 
 int	ft_dup2(int oldfd, int newfd)

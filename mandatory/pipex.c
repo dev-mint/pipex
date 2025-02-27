@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/26 14:54:08 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/27 11:08:16 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,32 @@ static int	exec_child1(int *fd, char *path, char **cmd, char **env)
 {
 	int	id;
 
-	(void)env;
 	id = fork();
 	if (id < 0)
-		return (perror("fork failed"), 1);
+		return (perror("fork failed"), ft_dup2(fd[0], 0), 1);
 	if (id == 0)
 	{
+		close(fd[3]);
+		close(fd[4]);
 		ft_dup2(fd[2], 0);
 		close(fd[0]);
 		ft_dup2(fd[1], 1);
 		// check_fds_in_child("<<<< Child 1 >>>>>>");
-		if (execve(path, cmd, NULL) == -1)
+		if (execve(path, cmd, env) == -1)
 		{
 			perror("execve 1 failed");
 			exit(1);
 		}
+		return (0);
 	}
 	else
 		return (close(fd[1]) ,ft_dup2(fd[0], 0), close(fd[2]), 0);
-	return (close(fd[2]), close(fd[1]), close(fd[0]), 1);
 }
 
-static int	parent(char **av, char **env)
+static int	parent(int *fd, char **av, char **env)
 {
 	char	**cmd;
 	char	*path;
-	int		fd[3];
 
 	if (pipe(fd) < 0)
 		return (perror("pipe failed"), 1);
@@ -66,7 +66,7 @@ static int	parent(char **av, char **env)
 		return (perror("failed to open infile"), close(fd[1]), ft_dup2(fd[0], 0), 1);
 	cmd = ft_split(av[2], ' ');
 	if (!cmd)
-		return (perror("allocation error"), 1);
+		return (perror("allocation error"), close(fd[1]), close(fd[2]), ft_dup2(fd[0], 0), 1);
 	path = get_path(cmd[0], env);
 	if (!path)
 	{
@@ -86,27 +86,24 @@ static int	parent2(int *fd, char **av, char **env)
 
 	out_fd = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (out_fd < 0)
-		return (perror("error opening outfile"), exit(1), 1);
+		return (perror("error opening outfile"), 1);
 	cmd = ft_split(av[3], ' ');
 	if (!cmd)
-		return (1);
+		return (close(out_fd), 1);
 	path = get_path(cmd[0], env);
 	if (!path)
-		return (free_arr(cmd), free(path), 1);
+		return (free_arr(cmd), close(out_fd), 1);
 	id = fork();
 	if (id < 0)
-		return (1);
+		return (close(out_fd), 1);
 	if (id == 0)
 	{
-		(void)fd;
-		// close(fd[3]);
-		// close(fd[4]);
+		ft_close2(fd[3], fd[4]);
 		ft_dup2(out_fd, 1);
-		check_fds_in_child("<<<< Child 2 >>>>>>");
+		// check_fds_in_child("<<<< Child 2 >>>>>>");
 		if (execve(path, cmd, NULL) == -1)
 			return (perror("execve 2 failed"), free_arr(cmd), free(path), exit(1), 1);
 	}
-	// check_fds_in_child("<<<< Parent >>>>>>");
 	return (free_arr(cmd), free(path), close(out_fd), 0);
 }
 
@@ -119,11 +116,11 @@ int	main(int ac, char **av, char **env)
 	fd[4] = dup(1);
 	if (ac != 5)
 		return (0);
-	parent(av, env);
+	parent(fd, av, env);
 	parent2(fd, av, env);
-	check_fds_in_child("<<<< Between Childs >>>>>>");
 	ft_dup2(fd[3], 0);
 	ft_dup2(fd[4], 1);
+	// check_fds_in_child("<<<< Parent >>>>>>");
 	while (wait(0) != -1)
 		;
 	return (0);
