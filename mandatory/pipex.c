@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/27 11:08:16 by anachat          ###   ########.fr       */
+/*   Updated: 2025/02/27 15:00:20 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ static int	exec_child1(int *fd, char *path, char **cmd, char **env)
 		return (0);
 	}
 	else
-		return (close(fd[1]) ,ft_dup2(fd[0], 0), close(fd[2]), 0);
+	{
+		return (close(fd[1]), ft_dup2(fd[0], 0), close(fd[2]), 0);
+	}
 }
 
 static int	parent(int *fd, char **av, char **env)
@@ -86,7 +88,7 @@ static int	parent2(int *fd, char **av, char **env)
 
 	out_fd = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (out_fd < 0)
-		return (perror("error opening outfile"), 1);
+		return (perror("error opening outfile"), 1);		
 	cmd = ft_split(av[3], ' ');
 	if (!cmd)
 		return (close(out_fd), 1);
@@ -98,11 +100,15 @@ static int	parent2(int *fd, char **av, char **env)
 		return (close(out_fd), 1);
 	if (id == 0)
 	{
+		fd[5] = 
 		ft_close2(fd[3], fd[4]);
 		ft_dup2(out_fd, 1);
 		// check_fds_in_child("<<<< Child 2 >>>>>>");
-		if (execve(path, cmd, NULL) == -1)
+		if (execve(path, cmd, env) == -1)
+		{
+			check_fds_in_child("<<<< Child 2 >>>>>>");
 			return (perror("execve 2 failed"), free_arr(cmd), free(path), exit(1), 1);
+		}
 	}
 	return (free_arr(cmd), free(path), close(out_fd), 0);
 }
@@ -110,7 +116,7 @@ static int	parent2(int *fd, char **av, char **env)
 
 int	main(int ac, char **av, char **env)
 {
-	int	fd[5];
+	int	fd[7];
 
 	fd[3] = dup(0);
 	fd[4] = dup(1);
