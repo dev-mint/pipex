@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/04 22:06:15 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/05 12:02:10 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 void	f(void)
 {
@@ -56,17 +56,17 @@ static int	exec_child1(int *fd, char *path, char **cmd, char **env)
 	}
 }
 
-static int	parent(int *fd, char **av, char **env)
+static int	parent(int *fd,  char *cmd_arg, char *infile, char **env)
 {
 	char	**cmd;
 	char	*path;
 
 	if (pipe(fd) < 0)
 		return (perror("pipe failed"), 1);
-	fd[2] = open(av[1], O_RDONLY);
+	fd[2] = open(infile, O_RDONLY);
 	if (fd[2] < 0)
 		return (perror("failed to open infile"), close(fd[1]), ft_dup2(fd[0], 0), 1);
-	cmd = ft_split(av[2], ' ');
+	cmd = ft_split(cmd_arg, ' ');
 	if (!cmd)
 		return (perror("allocation error"), close(fd[1]), close(fd[2]), ft_dup2(fd[0], 0), 1);
 	path = get_path(cmd[0], env);
@@ -79,17 +79,17 @@ static int	parent(int *fd, char **av, char **env)
 	return (free_arr(cmd), close(fd[1]), close(fd[0]), close(fd[2]), free(path), 0);
 }
 
-static int	parent2(int *fd, char **av, char **env)
+static int	parent2(int *fd, char *cmd_arg, char *outfile, char **env)
 {
 	int		out_fd;
 	char	*path;
 	char	**cmd;
 	int		id;
 
-	out_fd = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0777);
+	out_fd = open(outfile, O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (out_fd < 0)
 		return (perror("error opening outfile"), 1);		
-	cmd = ft_split(av[3], ' ');
+	cmd = ft_split(cmd_arg, ' ');
 	if (!cmd)
 		return (close(out_fd), 1);
 	path = get_path(cmd[0], env);
@@ -109,6 +109,25 @@ static int	parent2(int *fd, char **av, char **env)
 	return (free_arr(cmd), free(path), close(out_fd), 0);
 }
 
+
+static int	middle(int *fd, char *cmd_arg, char **env)
+{
+	char	**cmd;
+	char	*path;
+
+	cmd = ft_split(cmd_arg, ' ');
+	if (!cmd)
+		return (perror("allocation error"), close(fd[1]), ft_dup2(fd[0], 0), 1);
+	path = get_path(cmd[0], env);
+	if (!path)
+	{
+		perror("cannot find cmd path");
+		return (free_arr(cmd), close(fd[1]), ft_dup2(fd[0], 0), 1);
+	}
+	exec_child1(fd, path, cmd, env);
+	return (free_arr(cmd), close(fd[1]), close(fd[0]), free(path), 0);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	int	fd[7];
@@ -117,8 +136,8 @@ int	main(int ac, char **av, char **env)
 	fd[4] = dup(1);
 	if (ac != 5)
 		return (0);
-	parent(fd, av, env);
-	parent2(fd, av, env);
+	parent(fd, av[2], av[1], env);
+	parent2(fd, av[ac - 2], av[ac - 1], env);
 	ft_dup2(fd[3], 0);
 	ft_dup2(fd[4], 1);
 	// check_fds_in_child("<  <<< Parent >>>>>>");

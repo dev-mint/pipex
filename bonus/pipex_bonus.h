@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 11:56:03 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/05 11:59:11 by anachat          ###   ########.fr       */
+/*   Created: 2025/02/19 10:44:43 by anachat           #+#    #+#             */
+/*   Updated: 2025/03/04 22:15:27 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#ifndef BONUS_PIPEX_H
+# define BONUS_PIPEX_H
 
-static int	test(int hi, int d, int g, int f)
-{
-	return (0);
-}
+# include "../lib/libft/libft.h"
+# include <stdio.h>
+# include <fcntl.h>
 
-int	main(int argc, char const *argv[])
-{
-	printf("custom cmd exec\n");
-	return (0);
-}
+char	*get_path(char *cmd, char **env);
+void	free_arr(char **arr);
+int		ft_dup2(int oldfd, int newfd);
+void	ft_close2(int fd1, int fd2);
+
+#endif

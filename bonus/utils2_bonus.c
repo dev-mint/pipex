@@ -1,24 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils2_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 11:56:03 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/05 11:59:11 by anachat          ###   ########.fr       */
+/*   Created: 2025/02/22 16:48:20 by anachat           #+#    #+#             */
+/*   Updated: 2025/03/04 22:15:56 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "pipex_bonus.h"
 
-static int	test(int hi, int d, int g, int f)
+void	free_arr(char **arr)
 {
-	return (0);
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
 
-int	main(int argc, char const *argv[])
+void	ft_close2(int fd1, int fd2)
 {
-	printf("custom cmd exec\n");
-	return (0);
+	close(fd1);
+	close(fd2);
+}
+
+int	ft_dup2(int oldfd, int newfd)
+{
+	int	res;
+
+	res = dup2(oldfd, newfd);
+	close(oldfd);
+	return (res);
 }
