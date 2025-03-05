@@ -1,28 +1,5 @@
 # pipex
 
-
-### functions thats done understanding:
-- access
-- fork
-- pipe
-- dup
-- dup2
-
-
-
-- [X] access
-- [X] dup
-- [X] dup2
-- [X] execve
-- [X] fork
-- [X] pipe
-- [X] unlink
-- [X] wait
-- [X] waitpid
-
-
-
-
 fd[0] ===> pipe 0
 fd[1] ===> pipe 1
 fd[2] ===> infile
