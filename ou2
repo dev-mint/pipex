@@ -1,0 +1,3 @@
+NAME_BONUS  =   pipex_bonus
+SRCS_BONUS  =   bonus/pipex_bonus.c bonus/utils_bonus.c bonus/utils2_bonus.c
+bonus/%_bonus.o: bonus/%_bonus.c $(LIBFT_LIB) bonus/checker_bonus.h

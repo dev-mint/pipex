@@ -6,7 +6,7 @@
 #    By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/22 15:24:35 by anachat           #+#    #+#              #
-#    Updated: 2025/03/05 11:11:32 by anachat          ###   ########.fr        #
+#    Updated: 2025/03/05 15:23:50 by anachat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,14 @@ NAME        =   pipex
 NAME_BONUS  =   pipex_bonus
 
 CC          =   cc
-CFLAGS      =   -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS      =   -Wall -Wextra -Werror
 
 LIBFT_DIR   =   lib/libft
+GNL_DIR   =   bo
 
 LIBFT_LIB   =   $(LIBFT_DIR)/libft.a
+
+GNL_SRCS    =   $(GNL_DIR)/get_next_line.c $(GNL_DIR)/get_next_line_utils.c
 
 SRCS        =   mandatory/pipex.c mandatory/utils.c mandatory/utils2.c
 
