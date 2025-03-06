@@ -6,7 +6,7 @@
 #    By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/22 15:24:35 by anachat           #+#    #+#              #
-#    Updated: 2025/03/05 15:23:50 by anachat          ###   ########.fr        #
+#    Updated: 2025/03/06 17:10:18 by anachat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ GNL_SRCS    =   $(GNL_DIR)/get_next_line.c $(GNL_DIR)/get_next_line_utils.c
 
 SRCS        =   mandatory/pipex.c mandatory/utils.c mandatory/utils2.c
 
-SRCS_BONUS  =   bonus/pipex_bonus.c bonus/utils_bonus.c bonus/utils2_bonus.c
+SRCS_BONUS  =   bonus/pipex_bonus.c bonus/utils_bonus.c bonus/utils2_bonus.c \
+				bonus/check_file_bonus.c
 
 OBJS        =   $(SRCS:.c=.o)
 OBJS_BONUS  =   $(SRCS_BONUS:.c=.o)

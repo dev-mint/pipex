@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/05 14:44:03 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/06 17:24:25 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	exec_child1(int *fd, char *path, char **cmd, char **env)
 	{
 		close(fd[3]);
 		close(fd[4]);
-		ft_dup2(fd[2], 0);
+		// ft_dup2(fd[2], 0);
 		close(fd[0]);
 		ft_dup2(fd[1], 1);
 		// check_fds_in_child("<<<< Child 1 >>>>>>");
@@ -52,7 +52,7 @@ static int	exec_child1(int *fd, char *path, char **cmd, char **env)
 	}
 	else
 	{
-		return (close(fd[1]), ft_dup2(fd[0], 0), close(fd[2]), 0);
+		return (close(fd[1]), ft_dup2(fd[0], 0), 0);
 	}
 }
 
@@ -63,9 +63,11 @@ static int	parent(int *fd, char **av, int i, char **env)
 
 	if (pipe(fd) < 0)
 		return (perror("pipe failed"), 1);
-	fd[2] = open(av[1], O_RDONLY);
-	if (fd[2] < 0)
-		return (perror("failed to open infile"), close(fd[1]), ft_dup2(fd[0], 0), 1);
+	// fd[2] = open(av[1], O_RDONLY);
+	// if (fd[2] < 0)
+	// 	return (perror("failed to open infile"), close(fd[1]), ft_dup2(fd[0], 0), 1);
+	if (file_check(av, i) == -1)
+		return (0);
 	cmd = ft_split(av[i], ' ');
 	if (!cmd)
 		return (perror("allocation error"), close(fd[1]), close(fd[2]), ft_dup2(fd[0], 0), 1);
@@ -76,7 +78,7 @@ static int	parent(int *fd, char **av, int i, char **env)
 		return (free_arr(cmd), close(fd[1]), close(fd[2]), ft_dup2(fd[0], 0), 1);
 	}
 	exec_child1(fd, path, cmd, env);
-	return (free_arr(cmd), close(fd[1]), close(fd[0]), close(fd[2]), free(path), 0);
+	return (free_arr(cmd), close(fd[1]), close(fd[0]), free(path), 0);
 }
 
 static int	parent2(int *fd, char **av, int i, char **env)
@@ -89,7 +91,6 @@ static int	parent2(int *fd, char **av, int i, char **env)
 	out_fd = open(av[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (out_fd < 0)
 		return (perror("error opening outfile"), 1);
-	fprintf(stderr, "av[%d]: %s\n\n", i, av[i]);		
 	cmd = ft_split(av[i], ' ');
 	if (!cmd)
 		return (close(out_fd), 1);
@@ -120,8 +121,10 @@ int	main(int ac, char **av, char **env)
 	if (ac < 5)
 		return (0);
 	i = 2;
+	// if herdoc i++;
 	while (i < ac - 2)
 	{
+		
 		parent(fd, av, i, env);
 		i++;
 	}
