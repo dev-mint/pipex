@@ -6,7 +6,15 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/05 15:18:55 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/06 17:37:58 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "pipex_bonus.h"
+
+int	is_heredoc(char *arg)
+{
+	if (ft_strncmp("here_doc", arg, 9) == 0)
+		return (1);
+	return (0);
+}

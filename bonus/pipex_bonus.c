@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/06 17:24:25 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/07 15:51:53 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,21 @@ int	main(int ac, char **av, char **env)
 	if (ac < 5)
 		return (0);
 	i = 2;
-	// if herdoc i++;
+	if (is_heredoc(av[1]))
+	{
+		if (ac < 6)
+			return (perror("Invalid args number for her_doc"), 0);
+		i++;
+	}
 	while (i < ac - 2)
 	{
-		
 		parent(fd, av, i, env);
 		i++;
 	}
 	parent2(fd, av, i, env);
 	ft_dup2(fd[3], 0);
 	ft_dup2(fd[4], 1);
-	// check_fds_in_child("<  <<< Parent >>>>>>");
+	check_fds_in_child("<  <<< Parent >>>>>>");
 	while (wait(0) != -1)
 		;
 	return (0);
