@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/07 16:04:28 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/07 17:03:02 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	write_input(char *end)
 	if (fd < 0)
 		return (perror("cannot open heredoc file"), -1);
 	line = get_next_line(0);
+	printf("line: ===> %s\n", line);
 	if (!line)
 		return (perror("cannot read from stdin"), close(fd), -1);
 	while (line)
