@@ -14,3 +14,7 @@ fd[4] ===> Parent STD_OUT (1)
 fd[5] ===> Child 2 STD_IN (0)
 
 fd[6] ===> Child 2 STD_OUT (1)
+
+
+
+issue
