@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/07 15:51:30 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/07 16:04:28 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	write_input(char *end)
 	{
 		len = ft_strlen(line);
 		line[len - 1] = '\0';
+		// check line if equals end if not write to file
 		if (ft_strncmp(line, end, ft_strlen(end)) == 0)
 			break ;
 		line[len - 1] = '\n';
@@ -41,9 +42,14 @@ static int	write_input(char *end)
 int file_check(char **av, int i)
 {
 	int	infile;
+	int	res;
 
 	if (is_heredoc(av[1]) && i == 3)
-		return (write_input(av[2]));
+	{
+		res = write_input(av[2]);
+		if (res != 0)
+			return (res);
+	}
 	if ((!is_heredoc(av[1]) && i == 2) || (is_heredoc(av[1]) && i == 3))
 	{
 		infile = open(av[1], O_RDONLY);
