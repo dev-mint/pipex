@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/07 18:03:08 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/07 21:29:22 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ static int	parent2(int *fd, char **av, int i, char **env)
 		ft_close2(fd[3], fd[4]);
 		ft_dup2(out_fd, 1);
 		ft_close2(fd[0], fd[1]);
-		check_fds_in_child("<<<< Child 2 >>>>>>");
+		// fprintf(stderr, GREEN "===>> pipes: fd[0]: %d, fd[1]: %d, fd[2]: %d\n" RESET, fd[0], fd[1], fd[2]);
+		// fprintf(stderr, GREEN "===>> pipes: fd[3]: %d, fd[4]: %d\n" RESET, fd[3], fd[4]);
+		// fprintf(stderr, GREEN "===>> pipes: fd[5]: %d, fd[6]: %d\n" RESET, fd[5], fd[6]);
+		// check_fds_in_child("<<<< Child 2 >>>>>>");
 		if (execve(path, cmd, env) == -1)
 			return (perror("execve 2 failed"), free_arr(cmd), free(path), check_fds_in_child("<<<< Child 3 >>>>>>"), exit(1), 1);
 	}

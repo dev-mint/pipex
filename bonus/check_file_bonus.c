@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/07 17:56:15 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/07 21:58:45 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static int	write_input(char *end)
 		free(line);
 		line = get_next_line(0);
 	}
-	return (ft_dup2(heredoc_fd, 0), free(line), 0);
+	return (close(heredoc_fd), free(line), 0);
 }
 
 int file_check(char **av, int i)
@@ -57,7 +57,7 @@ int file_check(char **av, int i)
 		if (res != 0)
 			return (res);
 	}
-	else if (!is_heredoc(av[1]) && i == 2)
+	if ((!is_heredoc(av[1]) && i == 2) || (is_heredoc(av[1]) && i == 3))
 	{
 		infile = open(av[1], O_RDONLY);
 		if (infile < 0)
