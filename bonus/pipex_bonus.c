@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/08 13:22:32 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/08 18:02:17 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ static int	parent2(int *fd, char **av, int i, char **env)
 	if (!path)
 		return (free_arr(cmd), close(fd[5]), 1);
 	exec_child2(fd, path, cmd, env);
+	if (is_heredoc(av[1]) && unlink("here_doc") != 0)
+		perror("unlink failed");
 	return (free_arr(cmd), free(path), close(fd[5]), 0);
 }
 
