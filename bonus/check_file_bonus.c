@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/08 13:23:18 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/08 18:07:22 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ int	file_check(char **av, int i, int *fd)
 			return (perror("failed to open infile"),
 				close(fd[1]), ft_dup2(fd[0], 0), -2);
 		ft_dup2(infile, 0);
+	}
+	if (is_heredoc(av[1]) && i > 4)
+	{
+		if (unlink("here_doc") != 0)
+			perror("unlink failed");
 	}
 	return (0);
 }
