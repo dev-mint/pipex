@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:44:43 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/27 14:33:16 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/08 11:09:03 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,5 @@ char	*get_path(char *cmd, char **env);
 void	free_arr(char **arr);
 int		ft_dup2(int oldfd, int newfd);
 void	ft_close2(int fd1, int fd2);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/07 21:58:45 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/08 13:23:18 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@ static int	write_input(char *end)
 		return (perror("cannot open here_doc file"), -1);
 	line = get_next_line(0);
 	if (!line)
-		return (perror("cannot read from stdin"), ft_dup2(heredoc_fd, 0), -1);
+		return (ft_dup2(heredoc_fd, 0), -1);
 	while (line)
 	{
 		len = ft_strlen(line);
 		line[len - 1] = '\0';
-		// check line if equals end if not write to file
-		if (ft_strncmp(line, end, ft_strlen(end)) == 0)
+		if (ft_strncmp(line, end, ft_strlen(end) + 1) == 0)
 			break ;
 		line[len - 1] = '\n';
 		ft_putstr_fd(line, heredoc_fd);
@@ -46,7 +45,7 @@ static int	write_input(char *end)
 	return (close(heredoc_fd), free(line), 0);
 }
 
-int file_check(char **av, int i)
+int	file_check(char **av, int i, int *fd)
 {
 	int	infile;
 	int	res;
@@ -61,7 +60,8 @@ int file_check(char **av, int i)
 	{
 		infile = open(av[1], O_RDONLY);
 		if (infile < 0)
-			return (perror("failed to open infile"), -1);
+			return (perror("failed to open infile"),
+				close(fd[1]), ft_dup2(fd[0], 0), -2);
 		ft_dup2(infile, 0);
 	}
 	return (0);
