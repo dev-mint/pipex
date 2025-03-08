@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/08 21:27:45 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/08 21:38:22 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static int	write_input(char *end)
 	heredoc_fd = open("here_doc", O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (heredoc_fd < 0)
 		return (perror("cannot open here_doc file"), -1);
+	write (1, "heredoc> ", 10);
 	line = get_next_line(0);
 	if (!line)
 		return (ft_dup2(heredoc_fd, 0), -1);
@@ -40,6 +41,7 @@ static int	write_input(char *end)
 		line[len - 1] = '\n';
 		ft_putstr_fd(line, heredoc_fd);
 		free(line);
+		write (1, "heredoc> ", 10);
 		line = get_next_line(0);
 	}
 	return (close(heredoc_fd), free(line), 0);

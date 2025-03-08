@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/08 21:27:52 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/08 21:42:25 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	parent1(int *fd, char **av, int i, char **env)
 	path = get_path(cmd[0], env);
 	if (!path)
 	{
-		perror("cannot find cmd path");
+		perror("\ncannot find cmd path");
 		return (free_arr(cmd), close(fd[1]), close(fd[2]),
 			ft_dup2(fd[0], 0), 1);
 	}
@@ -90,7 +90,8 @@ static int	parent2(int *fd, char **av, int i, char **env)
 		return (close(fd[5]), 1);
 	path = get_path(cmd[0], env);
 	if (!path)
-		return (free_arr(cmd), close(fd[5]), 1);
+		return (perror("\ncannot find cmd path"), free_arr(cmd),
+			close(fd[5]), 1);
 	exec_child2(fd, path, cmd, env);
 	return (free_arr(cmd), free(path), close(fd[5]), 0);
 }
