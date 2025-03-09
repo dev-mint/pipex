@@ -6,7 +6,7 @@
 #    By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/22 15:24:35 by anachat           #+#    #+#              #
-#    Updated: 2025/03/07 17:43:31 by anachat          ###   ########.fr        #
+#    Updated: 2025/03/09 14:07:41 by anachat          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,10 +38,10 @@ bonus: $(LIBFT_DIR) $(NAME_BONUS)
 $(LIBFT_DIR):
 	@make -C $(LIBFT_DIR)
 
-mandatory/%.o: mandatory/%.c $(LIBFT_LIB) mandatory/push_swap.h
+mandatory/%.o: mandatory/%.c $(LIBFT_LIB) mandatory/pipex.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bonus/%_bonus.o: bonus/%_bonus.c $(LIBFT_LIB) bonus/checker_bonus.h
+bonus/%_bonus.o: bonus/%_bonus.c $(LIBFT_LIB) bonus/pipex_bonus.h $(GNL_DIR)/get_next_line.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)

@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:44:43 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/08 12:49:46 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/09 14:05:21 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include "../lib/libft/libft.h"
 # include "../lib/get_next_line/get_next_line.h"
-# include <stdio.h>
 # include <fcntl.h>
+# include <stdio.h>
 
 char	*get_path(char *cmd, char **env);
 void	free_arr(char **arr);

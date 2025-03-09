@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/08 21:38:22 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/09 14:35:35 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,23 @@ int	is_heredoc(char *arg)
 	return (0);
 }
 
+static int	open_heredoc(int *fd)
+{
+	unlink("here_doc");
+	fd[1] = open("here_doc", O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (fd[1] < 1)
+		return (perror("cannot open here_doc file"), -1);
+	fd[0] = open("here_doc", O_RDONLY);
+	if (fd[0] < 0)
+		return (perror("cannot open here_doc file"), -1);
+	return (0);
+}
+
 static int	write_input(char *end)
 {
 	char	*line;
-	int		len;
 	int		heredoc_fd;
+	int		len;
 
 	heredoc_fd = open("here_doc", O_CREAT | O_RDWR | O_TRUNC, 0777);
 	if (heredoc_fd < 0)
@@ -43,6 +55,8 @@ static int	write_input(char *end)
 		free(line);
 		write (1, "heredoc> ", 10);
 		line = get_next_line(0);
+		if (!line)
+			write(1, "\n", 1);
 	}
 	return (close(heredoc_fd), free(line), 0);
 }
