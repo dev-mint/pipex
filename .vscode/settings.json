@@ -9,6 +9,7 @@
 		"pipex_bonus.h": "c",
 		"fcntl.h": "c",
 		"stdio.h": "c",
-		"get_next_line.h": "c"
+		"get_next_line.h": "c",
+		"ostream": "c"
 	}
 }
