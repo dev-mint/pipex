@@ -27,9 +27,31 @@ fd[6] ===> Child 2 STD_OUT (1)
 
 [] cmd not found message in last cmd → Likely just an extra check before execution.
 
-[] print allocation errors → Requires checking all mallocs but still relatively simple.
+in MANDATORY :
+if infile exists: 
+	cmd1: not found err
+	cmd2: not found err
+else: 
+	infile: file not found
+	cmd2: not found err
+✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅
 
-[] empty cmd's in ft_split → Might need adjusting how ft_split handles empty strings.
+
+in BONUS :
+if infile exists: 
+	cmd1: not found err
+	cmd2: not found err
+	cmd3: not found err
+else: 
+	infile: file not found
+	cmd2: not found err
+	cmd3: not found err
+✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅
+
+
+[X] print allocation errors → Requires checking all mallocs but still relatively simple.
+
+[X] empty cmd's in ft_split → Might need adjusting how ft_split handles empty strings.
 
 [] fd leaks after args count check → Requires tracking open file descriptors.
 
@@ -37,6 +59,8 @@ fd[6] ===> Child 2 STD_OUT (1)
 
 [] change libft ---> make pipex → This sounds like a significant structural change.
 
+
+[] check how dup2 works actually
 
 # issues:
 

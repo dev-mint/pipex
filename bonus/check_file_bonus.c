@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 15:18:31 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/09 18:06:28 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:08:47 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	file_check(char **av, int i, int *fd)
 	int	infile;
 	int	res;
 
-	(void)fd;
 	if (is_heredoc(av[1]) && i == 3)
 	{
 		res = write_input(av[2], hd_fd);
@@ -81,8 +80,7 @@ int	file_check(char **av, int i, int *fd)
 		infile = open(av[1], O_RDONLY);
 		if (infile < 0)
 			return (perror("failed to open infile"),
-			ft_dup2(fd[0], 0),
-				 -1);
+				ft_dup2(fd[0], 0), -1);
 		ft_dup2(infile, 0);
 	}
 	return (0);

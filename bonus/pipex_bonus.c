@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/09 15:00:55 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:50:32 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,18 @@ static int	parent1(int *fd, char **av, int i, char **env)
 		return (perror("pipe failed"), 1);
 	if (file_check(av, i, fd) != 0)
 		return (close(fd[0]), close(fd[1]), 0);
+	if (!*(av[i]))
+		return (ft_perr("command not found"), close(fd[1]),
+			close(fd[2]), ft_dup2(fd[0], 0), 1);
 	cmd = ft_split(av[i], ' ');
 	if (!cmd)
-		return (perror("allocation error"), close(fd[1]),
+		return (ft_perr("allocation error"), close(fd[1]),
 			close(fd[2]), ft_dup2(fd[0], 0), 1);
 	path = get_path(cmd[0], env);
 	if (!path)
 	{
-		// perror("command not found");
-		perror(ft_strjoin(cmd[0], " <=== command not found"));
+		// ft_perr("command not found");
+		ft_perr(ft_strjoin(cmd[0], " <=== command not found"));
 		return (free_arr(cmd), close(fd[1]), close(fd[2]),
 			ft_dup2(fd[0], 0), 1);
 	}
@@ -83,29 +86,31 @@ static int	parent2(int *fd, char **av, int i, char **env)
 	char	*path;
 	char	**cmd;
 
-	fd[5] = open(av[i + 1], O_CREAT | O_RDWR | O_TRUNC, 0777);
+	fd[5] = open(av[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd[5] < 0)
 		return (perror("error opening outfile"), 1);
+	if (!*(av[i]))
+		return (ft_perr("command not found"), close(fd[5]), 1);
 	cmd = ft_split(av[i], ' ');
 	if (!cmd)
-		return (close(fd[5]), 1);
+		return (ft_perr("allocation error"), close(fd[5]), 1);
 	path = get_path(cmd[0], env);
 	if (!path)
 	{
-		// perror("command not found");
-		perror(ft_strjoin(cmd[0], " <=== command not found"));
+		// ft_perr("command not found");
+		ft_perr(ft_strjoin(cmd[0], " <=== command not found"));
 		return (free_arr(cmd), close(fd[5]), 1);
 	}
 	exec_child2(fd, path, cmd, env);
 	return (free_arr(cmd), free(path), close(fd[5]), 0);
 }
-void f (void) {system("lsof -c pipex_bonus");}
+// void f (void) {system("lsof -c pipex_bonus");}
 int	main(int ac, char **av, char **env)
 {
 	int	fd[6];
 	int	i;
 
-	atexit(f);
+	// atexit(f);
 	if (ac < 5)
 		return (ft_putstr_fd("Invalid args count\n", 2), 1);
 	fd[3] = dup(0);

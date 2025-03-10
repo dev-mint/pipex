@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:05:43 by anachat           #+#    #+#             */
-/*   Updated: 2025/02/24 13:49:19 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:45:52 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*find_cmd(char **paths, char *cmd)
 	{
 		cmd_path = join_path(paths[i], cmd);
 		if (!cmd_path)
-			return (NULL);
+			return (ft_perr("allocation error"), NULL);
 		if (cmd_exists(cmd_path))
 			return (cmd_path);
 		free(cmd_path);
@@ -84,7 +84,7 @@ char	*get_path(char *cmd, char **env)
 		return (NULL);
 	paths = ft_split(env_path, ':');
 	if (!paths)
-		return (NULL);
+		return (ft_perr("allocation error"), NULL);
 	cmd_path = find_cmd(paths, cmd);
 	free_arr(paths);
 	return (cmd_path);

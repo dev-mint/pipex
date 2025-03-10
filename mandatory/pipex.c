@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/09 17:59:05 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:50:40 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ static int	parent1(int *fd, char **av, char **env)
 	if (fd[2] < 0)
 		return (perror("failed to open infile"),
 			close(fd[1]), ft_dup2(fd[0], 0), 1);
+	if (!*(av[2]))
+		return (ft_perr("command not found"), close(fd[1]),
+			close(fd[2]), ft_dup2(fd[0], 0), 1);
 	cmd = ft_split(av[2], ' ');
 	if (!cmd)
-		return (perror("allocation error"), close(fd[1]),
+		return (ft_perr("allocation error"), close(fd[1]),
 			close(fd[2]), ft_dup2(fd[0], 0), 1);
 	path = get_path(cmd[0], env);
 	if (!path)
-	{
-		perror("command not found");
-		return (free_arr(cmd), close(fd[1]),
-			close(fd[2]), ft_dup2(fd[0], 0), 1);
-	}
+		return (perror("command not found"), free_arr(cmd),
+			close(fd[1]), close(fd[2]), ft_dup2(fd[0], 0), 1);
 	exec_child1(fd, path, cmd, env);
 	return (free_arr(cmd), close(fd[1]), close(fd[0]),
 		close(fd[2]), free(path), 0);
@@ -87,12 +87,14 @@ static int	parent2(int *fd, char **av, char **env)
 	char	*path;
 	char	**cmd;
 
-	fd[5] = open(av[4], O_CREAT | O_RDWR | O_TRUNC, 0777);
+	fd[5] = open(av[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd[5] < 0)
 		return (perror("error opening outfile"), 1);
+	if (!*(av[3]))
+		return (ft_perr("command not found"), close(fd[5]), 1);
 	cmd = ft_split(av[3], ' ');
 	if (!cmd)
-		return (close(fd[5]), 1);
+		return (ft_perr("allocation error"), close(fd[5]), 1);
 	path = get_path(cmd[0], env);
 	if (!path)
 		return (perror("command not found"), free_arr(cmd), close(fd[5]), 1);
