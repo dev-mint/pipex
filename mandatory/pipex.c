@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:49:00 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/10 12:50:40 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/10 13:30:41 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int ac, char **av, char **env)
 	int	fd[6];
 
 	if (ac != 5)
-		return (ft_putstr_fd("Invalid args count\n", 2), 1);
+		return (ft_perr("invalid args count"), 1);
 	fd[3] = dup(0);
 	fd[4] = dup(1);
 	parent1(fd, av, env);

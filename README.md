@@ -53,14 +53,14 @@ else:
 
 [X] empty cmd's in ft_split → Might need adjusting how ft_split handles empty strings.
 
-[] fd leaks after args count check → Requires tracking open file descriptors.
+[X] fd leaks after args count check → Requires tracking open file descriptors.
 
-[] unlink here_doc file 2 times after creating it → Involves process logic, could be tricky.
+[X] unlink here_doc file 2 times after creating it → Involves process logic, could be tricky.
 
-[] change libft ---> make pipex → This sounds like a significant structural change.
+[X] change libft ---> make pipex → This sounds like a significant structural change.
 
 
-[] check how dup2 works actually
+[X] check how dup2 works actually
 
 # issues:
 
