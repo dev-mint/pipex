@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 10:44:43 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/10 12:44:08 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/10 17:22:03 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	free_arr(char **arr);
 int		ft_dup2(int oldfd, int newfd);
 void	ft_close2(int fd1, int fd2);
 void	ft_perr(char *str);
+int		ft_wait(int last_pid, int default_st);
 int		file_check(char **av, int i, int *fd);
 int		is_heredoc(char *arg);
 

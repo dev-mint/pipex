@@ -6,7 +6,7 @@
 /*   By: anachat <anachat@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 16:48:20 by anachat           #+#    #+#             */
-/*   Updated: 2025/03/10 15:08:00 by anachat          ###   ########.fr       */
+/*   Updated: 2025/03/10 17:22:20 by anachat          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,21 @@ void	ft_perr(char *str)
 {
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("\n", 2);
+}
+
+int	ft_wait(int last_pid, int default_st)
+{
+	int status;
+	int exit_st;
+	int pid;
+
+	exit_st = default_st;
+	pid = wait(&status);
+	while (pid != -1)
+	{
+		if (pid == last_pid)
+			exit_st = WEXITSTATUS(status);
+		pid = wait(&status);
+	}
+	return (exit_st);
 }

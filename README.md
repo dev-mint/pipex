@@ -62,6 +62,9 @@ else:
 
 [X] check how dup2 works actually
 
+
+[ ] catch last cmd exit status
+
 # issues:
 
 fd leaks after args count check
